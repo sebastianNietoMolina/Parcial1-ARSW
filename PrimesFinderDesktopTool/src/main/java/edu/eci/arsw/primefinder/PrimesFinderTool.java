@@ -3,6 +3,8 @@ package edu.eci.arsw.primefinder;
 import edu.eci.arsw.mouseutils.MouseMovementMonitor;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.http.HttpResponse;
@@ -14,21 +16,37 @@ import org.apache.http.impl.client.HttpClientBuilder;
 
 public class PrimesFinderTool {
 
+    public static List<ThreadControler> tl;
+    public static int nt;
+    public static int min;
+    public static int max;
+    public static int saltos;
+
 	public static void main(String[] args) {
-		            
-            int maxPrim=1000;
-            
-            PrimesResultSet prs=new PrimesResultSet("john");
-            
-            PrimeFinder.findPrimes(new BigInteger("1"), new BigInteger("10000"), prs);
-            
-            System.out.println("Prime numbers found:");
-            
-            System.out.println(prs.getPrimes());
-            
-            
-            /*while(task_not_finished){
+
+            int maxPrim=40;
+            int terminado=0;
+            nt=4;
+            min=0;
+            saltos= maxPrim/nt;
+            tl = new CopyOnWriteArrayList<>();
+
+            for(int i=0; i<nt; i++){
+                min=max;
+                max=min+saltos;
+                if(i==nt-1){
+                    max=maxPrim;
+                }
+                ThreadControler t = new ThreadControler(min,max);
+                tl.add(t);
+                t.start();
+            }
+            /*
+            while(terminado!=nt){
                 try {
+                    for(ThreadControler t: tl){
+                        terminado+=t.getTerminado();
+                    }
                     //check every 10ms if the idle status (10 seconds without mouse
                     //activity) was reached. 
                     Thread.sleep(10);
@@ -42,10 +60,6 @@ public class PrimesFinderTool {
                     Logger.getLogger(PrimesFinderTool.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }*/
-                        
-            
-            
-            
             
 	}
 	
