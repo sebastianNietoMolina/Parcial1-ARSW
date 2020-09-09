@@ -1,5 +1,7 @@
 package edu.eci.arsw.api.primesrepo.model;
 
+
+
 /**
  * @author Santiago Carrillo
  * 2/22/18.
@@ -7,11 +9,12 @@ package edu.eci.arsw.api.primesrepo.model;
 public class FoundPrime
 {
     String user;
-
     String prime;
 
-    public FoundPrime()
+    public FoundPrime(String user, String prime)
     {
+        this.user=user;
+        this.prime=prime;
     }
 
     public String getUser()
