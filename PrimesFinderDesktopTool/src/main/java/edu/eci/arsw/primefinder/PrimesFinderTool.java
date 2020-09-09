@@ -24,43 +24,57 @@ public class PrimesFinderTool {
 
 	public static void main(String[] args) {
 
-            int maxPrim=40;
-            int terminado=0;
-            nt=4;
-            min=0;
-            saltos= maxPrim/nt;
-            tl = new CopyOnWriteArrayList<>();
+        int maxPrim=1000;
+        int terminado=0;
+        nt=4;
+        min=0;
+        saltos= maxPrim/nt;
+        tl = new CopyOnWriteArrayList<>();
 
-            for(int i=0; i<nt; i++){
-                min=max;
-                max=min+saltos;
-                if(i==nt-1){
-                    max=maxPrim;
-                }
-                ThreadControler t = new ThreadControler(min,max);
-                tl.add(t);
-                t.start();
+        for(int i=0; i<nt; i++){
+            min=max;
+            max=min+saltos;
+            if(i==nt-1){
+                max=maxPrim;
             }
-            /*
-            while(terminado!=nt){
+            //System.out.println(min+"faljsdfk"+max+"akjdga"+saltos);
+            ThreadControler t = new ThreadControler(min,max);
+            tl.add(t);
+            t.start();
+        }
+
+        while(terminado!=nt) {
+            for (ThreadControler t : tl) {
+                if (t.getTerminado() == 1) {
+                    t.pausa(false);
+                    terminado += t.getTerminado();
+                }
+            }
+            if(terminado==nt){
+                System.out.println("Finalizado");
+            }
+            else {
                 try {
-                    for(ThreadControler t: tl){
-                        terminado+=t.getTerminado();
-                    }
                     //check every 10ms if the idle status (10 seconds without mouse
-                    //activity) was reached. 
-                    Thread.sleep(10);
-                    if (MouseMovementMonitor.getInstance().getTimeSinceLastMouseMovement()>10000){
+                    //activity) was reached
+                    if (MouseMovementMonitor.getInstance().getTimeSinceLastMouseMovement() > 10000) {
+                        Thread.sleep(10);
+                        for (ThreadControler t : tl) {
+                            t.pausa(false);
+                        }
                         System.out.println("Idle CPU ");
-                    }
-                    else{
-                        System.out.println("User working again!");
+                    } else {
+                        for (ThreadControler t : tl) {
+                            t.reanudar(true);
+                        }
+                        System.out.println("User working again!    " + terminado);
                     }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(PrimesFinderTool.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }*/
-            
+            }
+        }
+        System.out.println("Salida");
 	}
 	
 }

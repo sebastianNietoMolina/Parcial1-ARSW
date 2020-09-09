@@ -1,6 +1,7 @@
 package edu.eci.arsw.primefinder;
 
 import java.math.BigInteger;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -16,6 +17,7 @@ public class ThreadControler extends Thread {
         this.min=min;
         this.max=max;
         pausa=true;
+        terminado=0;
 
     }
 
@@ -32,26 +34,24 @@ public class ThreadControler extends Thread {
         return terminado;
     }
 
+
     @Override
     public void run(){
 
         if(pausa){
-
             PrimesResultSet prs=new PrimesResultSet("john");
-
             String mi = Integer.toString(min);
             String ma = Integer.toString(max);
             PrimeFinder.findPrimes(new BigInteger(String.valueOf(min)), new BigInteger(String.valueOf(max)), prs);
-
             System.out.println("Prime numbers found:");
-
             System.out.println(prs.getPrimes());
-
-            terminado+=1;
+            terminado=1;
+            pausa=false;
 
         }else{
             synchronized (this) {
                 try {
+                    System.out.println(min+"  alskf "+max);
                     this.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
