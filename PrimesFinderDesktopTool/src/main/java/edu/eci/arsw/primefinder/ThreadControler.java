@@ -16,7 +16,7 @@ public class ThreadControler extends Thread {
     public ThreadControler(int min, int max){
         this.min=min;
         this.max=max;
-        pausa=true;
+        pausa=false;
         terminado=0;
 
     }
@@ -38,7 +38,7 @@ public class ThreadControler extends Thread {
     @Override
     public void run(){
 
-        if(pausa){
+        if(!pausa){
             PrimesResultSet prs=new PrimesResultSet("john");
             String mi = Integer.toString(min);
             String ma = Integer.toString(max);
@@ -46,8 +46,6 @@ public class ThreadControler extends Thread {
             System.out.println("Prime numbers found:");
             System.out.println(prs.getPrimes());
             terminado=1;
-            pausa=false;
-
         }else{
             synchronized (this) {
                 try {

@@ -24,7 +24,7 @@ public class PrimesFinderTool {
 
 	public static void main(String[] args) {
 
-        int maxPrim=1000;
+        int maxPrim=80;
         int terminado=0;
         nt=4;
         min=0;
@@ -60,14 +60,14 @@ public class PrimesFinderTool {
                     if (MouseMovementMonitor.getInstance().getTimeSinceLastMouseMovement() > 10000) {
                         Thread.sleep(10);
                         for (ThreadControler t : tl) {
-                            t.pausa(false);
+                            t.pausa(true);
                         }
                         System.out.println("Idle CPU ");
                     } else {
                         for (ThreadControler t : tl) {
-                            t.reanudar(true);
+                            t.reanudar(false);
                         }
-                        System.out.println("User working again!    " + terminado);
+                        System.out.println("User working again!");
                     }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(PrimesFinderTool.class.getName()).log(Level.SEVERE, null, ex);
