@@ -11,7 +11,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 2/22/18.
  */
 @Service()
-public class PrimeServiceStub implements edu.eci.arsw.api.primesrepo.service.PrimeService
+public class
+
+PrimeServiceStub implements edu.eci.arsw.api.primesrepo.service.PrimeService
 {
 
     List<FoundPrime> primos;
